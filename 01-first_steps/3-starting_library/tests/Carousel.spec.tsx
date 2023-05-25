@@ -1,9 +1,9 @@
 import { render, screen } from "@testing-library/react";
 
-import { MyComponent } from "../src/MyComponent";
+import { Carousel } from "../src/Carousel";
 
-test("MyComponent displays correctoy", () => {
-	render(<MyComponent title="My Component" />);
+test("Carousel displays correctoy", () => {
+	render(<Carousel title="My Component" />);
 
 	const heading = screen.getByText(/My Component/i);
 

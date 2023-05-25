@@ -1,5 +1,5 @@
 {
-  "name": "@codelytv/typescript-react-library-template",
+  "name": "@codelytv/react-carousel",
   "author": "codelytv",
   "license": "MIT",
   "version": "1.0.0",
@@ -7,8 +7,8 @@
   "files": [
     "dist"
   ],
-  "main": "./dist/my-component.umd.cjs",
-  "module": "./dist/my-component.js",
+  "main": "./dist/react-carousel.umd.cjs",
+  "module": "./dist/react-carousel.js",
   "types": "./dist/index.d.ts",
   "peerDependencies": {
     "react": "^18.2.0",
@@ -24,50 +24,6 @@
     "build:docs": "storybook build",
     "cy:open": "cypress open",
     "cy:run": "cypress run --component"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest",
-      "eslint-config-codely/typescript",
-      "plugin:storybook/recommended"
-    ],
-    "settings": {
-      "import/resolver": {
-        "node": {
-          "extensions": [
-            ".js",
-            ".jsx",
-            ".ts",
-            ".tsx"
-          ]
-        }
-      }
-    },
-    "overrides": [
-      {
-        "files": [
-          "*.ts",
-          "*.tsx"
-        ],
-        "parserOptions": {
-          "project": [
-            "./tsconfig.json"
-          ]
-        }
-      },
-      {
-        "files": [
-          "tests/**/*.cy.tsx",
-          "tests/tests-config/cypress/**/*.ts"
-        ],
-        "parserOptions": {
-          "project": [
-            "./tests/tsconfig.json"
-          ]
-        }
-      }
-    ]
   },
   "browserslist": {
     "production": [

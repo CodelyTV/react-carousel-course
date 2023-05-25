@@ -21,49 +21,6 @@
   <a href="https://github.com/CodelyTV/typescript-react_library-vite_template/stargazers">Stars are welcome 😊</a>
 </p>
 
-## ⚡ Using this Vite template
-
-1. Create your project based on this template:
-   - a) If you want to create a GitHub repository, we would recommend to use the GitHub "Use this template" button and clone your newly created repository
-   - b) If you prefer to just create a local project, you can use [degit](https://github.com/Rich-Harris/degit):
-     ```bash
-     npx degit CodelyTV/typescript-react_library-vite_template#main my-app
-     ```
-2. Update your project meta-information:
-   - [ ] Update the [`package.json`](https://github.com/CodelyTV/typescript-react_library-vite_template/blob/main/package.json):
-     - [ ] Specify proper values for the `name`, `author` and `license` properties
-     - [ ] Specify the file name for the `main` and `module` properties
-     - [ ] If you wish to expose multiple entry points, follow this structure:
-     ```
-      {
-        "name": "my-component",
-        "type": "module",
-        "files": ["dist"],
-        "main": "./dist/my-component.cjs",
-        "module": "./dist/my-component.js",
-        "exports": {
-          ".": {
-            "import": "./dist/my-component.js",
-            "require": "./dist/my-component.cjs"
-          },
-          "./secondary": {
-            "import": "./dist/secondary.js",
-            "require": "./dist/secondary.cjs"
-          }
-        }
-      }
-      ```
-   - [ ] Change the `name` and `fileName` in [`vite.config.ts`](https://github.com/CodelyTV/typescript-react_library-vite_template/blob/main/vite.config.ts) to match the file name specified in the `package.json`
-   - [ ] Change the author in [`LICENSE`](https://github.com/CodelyTV/typescript-react_library-vite_template/blob/main/LICENSE)
-   - [ ] Clean up this [`README.md`](https://github.com/CodelyTV/typescript-react_library-vite_template/blob/main/README.md)
-3. Set up your GitHub Actions workflow:
-   - [ ] If you do **not** wish to publish to npm, you can delete the `.github/workflows/publish.yml`
-   - [ ] If you do wish to publish to npm, you can delete the `.github/workflows/CI.yml` and set up your token following [the instructions below](#-ci-and-publishing).
-4. Run your library:
-   1. `cd my-library`: Move to your project root directory
-   2. `npm install`: Install all the project dependencies
-   3. `npm run docs`: Start the Storybook dev mode on [localhost:6006](http://localhost:6006)
-
 ## 📚 Documentation
 
 - `npm run docs`: Run Storybook documentation in dev mode
