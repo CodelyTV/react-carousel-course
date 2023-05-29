@@ -1,4 +1,5 @@
 import { Carousel } from "../../src/Carousel";
+import { beNotVisible, beVisible } from "../tests-helpers/visibility";
 
 describe("Carousel pagination", () => {
 	it("next button should scroll until the first not visible slide is visible", () => {
@@ -16,11 +17,11 @@ describe("Carousel pagination", () => {
 
 		const thirdSlide = ".carousel__slide:nth-child(3)";
 
-		cy.get(thirdSlide).should("not.be.visible");
+		cy.get(thirdSlide).should(beNotVisible);
 
 		cy.findByLabelText(/Next/i).click();
 
-		cy.get(thirdSlide).should("be.visible");
+		cy.get(thirdSlide).should(beVisible);
 	});
 
 	it("previous button should scroll until the first not visible slide is visible", () => {
@@ -36,18 +37,19 @@ describe("Carousel pagination", () => {
 		);
 		cy.mount(randomCarousel);
 
-		const firstSlide = ".carousel__slide:nth-child(1)";
-
-		cy.document()
-			.then((document) => {
+		function scrollPastFirstSlide() {
+			return cy.document().then((document) => {
 				const slider = document.querySelector(".carousel__slider") as HTMLElement;
 				slider.scrollLeft = 800;
-			})
-			.get(firstSlide)
-			.should("not.be.visible");
+			});
+		}
+
+		const firstSlide = ".carousel__slide:nth-child(1)";
+
+		scrollPastFirstSlide().get(firstSlide).should(beNotVisible);
 
 		cy.findByLabelText(/Previous/i).click();
 
-		cy.get(firstSlide).should("be.visible");
+		cy.get(firstSlide).should(beVisible);
 	});
 });

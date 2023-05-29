@@ -16,7 +16,11 @@ module.exports = {
 			},
 		},
 		{
-			files: ["tests/**/*.cy.tsx", "tests/tests-config/cypress/**/*.ts"],
+			files: [
+				"tests/**/*.cy.tsx",
+				"tests/tests-config/cypress/**/*.ts",
+				"tests/tests-helpers/**/*.ts",
+			],
 			parserOptions: {
 				project: ["./tests/tsconfig.json"],
 				tsconfigRootDir: __dirname,
