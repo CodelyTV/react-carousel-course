@@ -7,12 +7,16 @@ interface CarouselProps {
 	children: JSX.Element[];
 	prevAriaLabel?: string;
 	nextAriaLabel?: string;
+	prevButtonContent?: React.ReactNode;
+	nextButtonContent?: React.ReactNode;
 }
 
 export function Carousel({
 	children,
 	prevAriaLabel = "Previous",
 	nextAriaLabel = "Next",
+	prevButtonContent = <ArrowLeft />,
+	nextButtonContent = <ArrowRight />,
 }: CarouselProps) {
 	return (
 		<div className="carousel">
@@ -25,10 +29,10 @@ export function Carousel({
 			</div>
 			<div className="carousel__nav">
 				<button className="carousel__button" aria-label={prevAriaLabel}>
-					<ArrowLeft />
+					{prevButtonContent}
 				</button>
 				<button className="carousel__button" aria-label={nextAriaLabel}>
-					<ArrowRight />
+					{nextButtonContent}
 				</button>
 			</div>
 		</div>
