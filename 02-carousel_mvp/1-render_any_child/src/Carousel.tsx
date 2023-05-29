@@ -1,9 +1,17 @@
 import "./Carousel.scss";
 
-export function Carousel({ title }: { title: string }) {
+interface CarouselProps {
+	children: JSX.Element[];
+}
+
+export function Carousel({ children }: CarouselProps) {
 	return (
-		<div className="myComponent">
-			<h1>{title}</h1>
+		<div className="carousel">
+			{children.map((child, index) => (
+				<div key={index} className="carousel__slide">
+					{child}
+				</div>
+			))}
 		</div>
 	);
 }

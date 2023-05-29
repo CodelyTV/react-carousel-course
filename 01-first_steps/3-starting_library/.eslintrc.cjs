@@ -1,10 +1,5 @@
 module.exports = {
-	extends: [
-		"react-app",
-		"react-app/jest",
-		"eslint-config-codely/typescript",
-		"plugin:storybook/recommended",
-	],
+	extends: ["react-app", "eslint-config-codely/typescript", "plugin:storybook/recommended"],
 	settings: {
 		"import/resolver": {
 			node: {
