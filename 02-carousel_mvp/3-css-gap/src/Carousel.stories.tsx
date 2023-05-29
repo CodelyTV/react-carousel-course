@@ -36,3 +36,29 @@ export const VariableSlides: Story = {
 		],
 	},
 };
+
+const style = { width: "300px", height: "300px", background: "#fef878" };
+export const WithGap: Story = {
+	parameters: {
+		docs: {
+			description: {
+				story:
+					"To add gap between slides, you must specify a `--slider-gap` custom property via CSS. You can specify it in a wrapping div (see 'show code' below for an example), or in any other parent element in your CSS. [Read more about CSS custom properties](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties).",
+			},
+		},
+	},
+	args: {
+		children: [
+			<div style={style}>slide 1</div>,
+			<div style={style}>slide 2</div>,
+			<div style={style}>slide 3</div>,
+			<div style={style}>slide 4</div>,
+			<div style={style}>slide 5</div>,
+		],
+	},
+	render: (args) => (
+		<div style={{ "--slider-gap": "1rem" } as React.CSSProperties}>
+			<Carousel {...args}></Carousel>
+		</div>
+	),
+};

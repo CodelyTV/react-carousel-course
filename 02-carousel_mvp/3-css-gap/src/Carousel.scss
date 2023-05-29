@@ -4,6 +4,7 @@
 
   &__slider {
     display: flex;
+    gap: var(--slider-gap, 0);
     overflow-x: scroll;
     overflow-y: hidden;
     scrollbar-width: none;
