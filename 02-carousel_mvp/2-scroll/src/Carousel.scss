@@ -1,5 +1,10 @@
 .carousel {
-  display: flex;
   width: 100%;
   overflow: hidden;
+
+  &__slider {
+    display: flex;
+    overflow-x: scroll;
+    overflow-y: hidden;
+  }
 }

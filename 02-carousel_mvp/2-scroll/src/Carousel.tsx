@@ -7,11 +7,13 @@ interface CarouselProps {
 export function Carousel({ children }: CarouselProps) {
 	return (
 		<div className="carousel">
-			{children.map((child, index) => (
-				<div key={index} className="carousel__slide">
-					{child}
-				</div>
-			))}
+			<div className="carousel__slider">
+				{children.map((child, index) => (
+					<div key={index} className="carousel__slide">
+						{child}
+					</div>
+				))}
+			</div>
 		</div>
 	);
 }
