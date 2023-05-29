@@ -21,6 +21,9 @@ module.exports = {
 				project: ["./tests/tsconfig.json"],
 				tsconfigRootDir: __dirname,
 			},
+			rules: {
+				"@typescript-eslint/no-unused-expressions": "off",
+			},
 		},
 	],
 };
