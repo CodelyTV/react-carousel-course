@@ -5,9 +5,15 @@ import { ArrowRight } from "./ArrowRight";
 
 interface CarouselProps {
 	children: JSX.Element[];
+	prevAriaLabel?: string;
+	nextAriaLabel?: string;
 }
 
-export function Carousel({ children }: CarouselProps) {
+export function Carousel({
+	children,
+	prevAriaLabel = "Previous",
+	nextAriaLabel = "Next",
+}: CarouselProps) {
 	return (
 		<div className="carousel">
 			<div className="carousel__slider">
@@ -18,10 +24,10 @@ export function Carousel({ children }: CarouselProps) {
 				))}
 			</div>
 			<div className="carousel__nav">
-				<button className="carousel__button" aria-label="Previous">
+				<button className="carousel__button" aria-label={prevAriaLabel}>
 					<ArrowLeft />
 				</button>
-				<button className="carousel__button" aria-label="Next">
+				<button className="carousel__button" aria-label={nextAriaLabel}>
 					<ArrowRight />
 				</button>
 			</div>
