@@ -106,4 +106,26 @@ describe("Carousel pagination", () => {
 
 		cy.get(firstSlide).should(beVisible);
 	});
+
+	it("previous button should scroll to the end of the carousel when there are no slides before the first visible slide", () => {
+		const randomCarousel = (
+			<div style={{ width: "900px", margin: "0 auto" }}>
+				<Carousel>
+					<div style={{ width: "300px", background: "yellow" }}>slide 1</div>
+					<div style={{ width: "300px", background: "yellow" }}>slide 2</div>
+					<div style={{ width: "300px", background: "yellow" }}>slide 3</div>
+					<div style={{ width: "300px", background: "yellow" }}>slide 4</div>
+					<div style={{ width: "300px", background: "yellow" }}>slide 5</div>
+					<div style={{ width: "300px", background: "yellow" }}>slide 6</div>
+				</Carousel>
+			</div>
+		);
+		cy.mount(randomCarousel);
+
+		const lastSlide = ".carousel__slide:last-child";
+
+		cy.findByLabelText(/Previous/i).click();
+
+		cy.get(lastSlide).should(beVisible);
+	});
 });
