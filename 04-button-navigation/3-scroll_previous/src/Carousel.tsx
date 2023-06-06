@@ -4,7 +4,7 @@ import { useRef } from "react";
 
 import { ArrowLeft } from "./ArrowLeft";
 import { ArrowRight } from "./ArrowRight";
-import { scrollSliderNext } from "./core/scroll";
+import { scrollSliderNext, scrollSliderPrevious } from "./core/scroll";
 
 interface CarouselProps {
 	children: JSX.Element[];
@@ -23,12 +23,24 @@ export function Carousel({
 }: CarouselProps) {
 	const slider = useRef<HTMLDivElement>(null);
 
-	function scrollNext() {
+	function getSliderOrThrow() {
 		if (!slider.current) {
 			throw new Error("Slider not found");
 		}
 
-		scrollSliderNext(slider.current);
+		return slider.current;
+	}
+
+	function scrollNext() {
+		const slider = getSliderOrThrow();
+
+		scrollSliderNext(slider);
+	}
+
+	function scrollPrevious() {
+		const slider = getSliderOrThrow();
+
+		scrollSliderPrevious(slider);
 	}
 
 	return (
@@ -41,7 +53,7 @@ export function Carousel({
 				))}
 			</div>
 			<div className="carousel__nav">
-				<button className="carousel__button" aria-label={prevAriaLabel}>
+				<button onClick={scrollPrevious} className="carousel__button" aria-label={prevAriaLabel}>
 					{prevButtonContent}
 				</button>
 				<button onClick={scrollNext} className="carousel__button" aria-label={nextAriaLabel}>

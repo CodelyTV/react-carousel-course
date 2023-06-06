@@ -26,3 +26,41 @@ export function scrollSliderNext(slider: HTMLElement): void {
 
 	scrollSliderTo(slider, position);
 }
+
+export function scrollSliderPrevious(slider: HTMLElement): void {
+	const slides = slider.querySelectorAll<HTMLElement>(`.carousel__slide`);
+
+	let firstVisibleSlideIndex = null;
+
+	for (const [index, slide] of Array.from(slides).entries()) {
+		if (isCompletelyVisible(slide)) {
+			firstVisibleSlideIndex = index;
+			break;
+		}
+	}
+
+	if (firstVisibleSlideIndex === null) {
+		return;
+	}
+
+	if (!slider.parentElement) {
+		throw new Error("Could not find carousel div");
+	}
+
+	const carouselWidth = slider.parentElement.clientWidth;
+
+	let accumulatedWidth = 0;
+	let slideToScrollTo = slides[firstVisibleSlideIndex];
+
+	for (let i = firstVisibleSlideIndex; i >= 0; i--) {
+		accumulatedWidth += slides[i].clientWidth;
+		slideToScrollTo = slides[i];
+
+		if (accumulatedWidth > carouselWidth) {
+			break;
+		}
+	}
+
+	const position = slideToScrollTo.offsetLeft;
+	scrollSliderTo(slider, position);
+}
