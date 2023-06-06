@@ -21,11 +21,8 @@ export function scrollSliderNext(slider: HTMLElement): void {
 		}
 	}
 
-	if (!firstNotVisibleSlideAfterVisibleSlide) {
-		return;
-	}
-
-	const position = firstNotVisibleSlideAfterVisibleSlide.offsetLeft;
+	const initialScrollPosition = 0;
+	const position = firstNotVisibleSlideAfterVisibleSlide?.offsetLeft ?? initialScrollPosition;
 
 	scrollSliderTo(slider, position);
 }

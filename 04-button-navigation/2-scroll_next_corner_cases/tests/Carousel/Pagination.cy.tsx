@@ -53,6 +53,34 @@ describe("Carousel pagination", () => {
 		cy.get(fifthSlide).should(beVisible);
 	});
 
+	it("next button should scroll back to initial position if there are no not visible slides after first visible slide", () => {
+		const carousel = (
+			<div style={{ width: "900px", margin: "0 auto" }}>
+				<Carousel>
+					<div style={{ width: "300px", background: "yellow" }}>slide 1</div>
+					<div style={{ width: "300px", background: "yellow" }}>slide 2</div>
+					<div style={{ width: "300px", background: "yellow" }}>slide 3</div>
+					<div style={{ width: "300px", background: "yellow" }}>slide 4</div>
+					<div style={{ width: "300px", background: "yellow" }}>slide 5</div>
+					<div style={{ width: "300px", background: "yellow" }}>slide 6</div>
+				</Carousel>
+			</div>
+		);
+		cy.mount(carousel);
+
+		function scrollPastFirstSlide() {
+			return scrollPast(900);
+		}
+
+		const first = ".carousel__slide:first-child";
+
+		scrollPastFirstSlide();
+
+		cy.findByLabelText(/Next/i).click();
+
+		cy.get(first).should(beVisible);
+	});
+
 	it("previous button should scroll until the first not visible slide is visible", () => {
 		const randomCarousel = (
 			<div style={{ width: "900px", margin: "0 auto" }}>
