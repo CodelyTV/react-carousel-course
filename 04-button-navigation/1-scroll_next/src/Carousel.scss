@@ -3,11 +3,13 @@
   overflow: hidden;
 
   &__slider {
+    position: relative;
     display: flex;
     gap: var(--slider-gap, 0);
     overflow-x: scroll;
     overflow-y: hidden;
     scrollbar-width: none;
+    scroll-behavior: smooth;
 
     &::-webkit-scrollbar {
       display: none;
