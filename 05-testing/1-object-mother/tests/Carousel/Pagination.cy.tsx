@@ -1,6 +1,6 @@
 import { CarouselMother } from "../tests-helpers/CarouselMother";
-import { scrollPast } from "../tests-helpers/scroll";
-import { beNotVisible, beVisible } from "../tests-helpers/visibility";
+import { disableScrollTransition, scrollPast, scrollUntilTheEnd } from "../tests-helpers/scroll";
+import { beNotVisible, beVisible, isCompletelyVisible } from "../tests-helpers/visibility";
 
 describe("Carousel pagination", () => {
 	it("next button should scroll until the first not visible slide is visible", () => {
@@ -100,5 +100,60 @@ describe("Carousel pagination", () => {
 		cy.findByLabelText(/Previous/i).click();
 
 		cy.get(lastSlide).should(beVisible);
+	});
+
+	it("next button should scroll correctly with random slide widths", () => {
+		const randomCarousel = CarouselMother.random();
+		cy.mount(randomCarousel);
+		disableScrollTransition();
+
+		const lastSlide = ".carousel__slide:last-child";
+		let isLastSlideVisible;
+
+		function clickNextButtonIfLastSlideIsNotVisible($el: JQuery<HTMLElement>) {
+			const htmlElement = $el[0];
+
+			isLastSlideVisible = isCompletelyVisible(htmlElement);
+
+			if (!isLastSlideVisible) {
+				cy.findByLabelText(/Next/i).click();
+			}
+		}
+
+		const maxAttempts = 20;
+
+		for (let i = 0; i < maxAttempts; i++) {
+			cy.get(lastSlide).then(clickNextButtonIfLastSlideIsNotVisible);
+		}
+
+		cy.get(lastSlide).should(beVisible);
+	});
+
+	it("previous button should scroll correctly with random slide widths", () => {
+		const randomCarousel = CarouselMother.random();
+		cy.mount(randomCarousel);
+		disableScrollTransition();
+		scrollUntilTheEnd();
+
+		const firstSlide = ".carousel__slide:first-child";
+		let isFirstSlideVisible;
+
+		function clickPreviousButtonIfLastSlideIsNotVisible($el: JQuery<HTMLElement>) {
+			const htmlElement = $el[0];
+
+			isFirstSlideVisible = isCompletelyVisible(htmlElement);
+
+			if (!isFirstSlideVisible) {
+				cy.findByLabelText(/Previous/i).click();
+			}
+		}
+
+		const maxAttempts = 20;
+
+		for (let i = 0; i < maxAttempts; i++) {
+			cy.get(firstSlide).then(clickPreviousButtonIfLastSlideIsNotVisible);
+		}
+
+		cy.get(firstSlide).should(beVisible);
 	});
 });
