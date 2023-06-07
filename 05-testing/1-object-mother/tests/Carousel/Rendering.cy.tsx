@@ -1,4 +1,5 @@
 import { Carousel } from "../../src/Carousel";
+import { CarouselMother } from "../tests-helpers/CarouselMother";
 
 describe("<Carousel />", () => {
 	it("renders children as slides", () => {
@@ -33,15 +34,13 @@ describe("<Carousel />", () => {
 	});
 
 	it("scrolls the slides correctly", () => {
-		const carouselWithLastSlideNotVisible = (
-			<div style={{ width: "900px" }}>
-				<Carousel>
-					<div style={{ width: "500px", background: "yellow" }}>A simple slide</div>
-					<div style={{ width: "500px", background: "yellow" }}>A simple slide</div>
-					<div style={{ width: "500px", background: "yellow" }}>A simple slide</div>
-				</Carousel>
-			</div>
-		);
+		const minSlideWidth = 300;
+		const slidesCount = 4;
+		const carouselWithLastSlideNotVisible = CarouselMother.random({
+			carouselWidth: minSlideWidth * (slidesCount - 1),
+			minSlideWidth,
+			slidesCount,
+		});
 
 		cy.mount(carouselWithLastSlideNotVisible);
 
