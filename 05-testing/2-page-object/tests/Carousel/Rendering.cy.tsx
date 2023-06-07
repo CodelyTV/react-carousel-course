@@ -1,5 +1,6 @@
 import { Carousel } from "../../src/Carousel";
 import { CarouselMother } from "../tests-helpers/CarouselMother";
+import { CarouselPageObject } from "../tests-helpers/CarouselPageObject";
 
 describe("<Carousel />", () => {
 	it("renders children as slides", () => {
@@ -44,12 +45,12 @@ describe("<Carousel />", () => {
 
 		cy.mount(carouselWithLastSlideNotVisible);
 
-		const lastSlide = ".carousel__slide:last-child";
+		const carousel = new CarouselPageObject();
 
-		cy.get(lastSlide).should("not.be.visible");
+		carousel.getLastSlide().should("not.be.visible");
 
-		cy.get(lastSlide).scrollIntoView();
+		carousel.getLastSlide().scrollIntoView();
 
-		cy.get(lastSlide).should("be.visible");
+		carousel.getLastSlide().should("be.visible");
 	});
 });

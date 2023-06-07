@@ -1,6 +1,5 @@
 import { CarouselMother } from "../tests-helpers/CarouselMother";
-import { disableScrollTransition, scrollPast, scrollUntilTheEnd } from "../tests-helpers/scroll";
-import { beNotVisible, beVisible, isCompletelyVisible } from "../tests-helpers/visibility";
+import { CarouselPageObject } from "../tests-helpers/CarouselPageObject";
 
 describe("Carousel pagination", () => {
 	it("next button should scroll until the first not visible slide is visible", () => {
@@ -12,15 +11,16 @@ describe("Carousel pagination", () => {
 			maxSlideWidth: slideWidth,
 			slidesCount: visibleSlides + 1,
 		});
+		const partiallyVisibleSlide = 3;
 		cy.mount(carouselWithThirdSlidePartiallyVisible);
 
-		const thirdSlide = ".carousel__slide:nth-child(3)";
+		const carousel = new CarouselPageObject();
 
-		cy.get(thirdSlide).should(beNotVisible);
+		carousel.verifySlideIsNotCompletelyVisible(partiallyVisibleSlide);
 
-		cy.findByLabelText(/Next/i).click();
+		carousel.clickNext();
 
-		cy.get(thirdSlide).should(beVisible);
+		carousel.verifySlideIsCompletelyVisible(partiallyVisibleSlide);
 	});
 
 	it("next button should scroll until the first not visible slide after a visible slide becomes visible", () => {
@@ -30,19 +30,16 @@ describe("Carousel pagination", () => {
 			minSlideWidth: slideWidth,
 			maxSlideWidth: slideWidth,
 		});
+		const firstSlideNotVisibleIndex = 5;
 		cy.mount(randomCarousel);
 
-		function scrollPastFirstSlide() {
-			return scrollPast(slideWidth);
-		}
+		const carousel = new CarouselPageObject();
 
-		const fifthSlide = ".carousel__slide:nth-child(5)";
+		carousel.scrollPast(slideWidth);
 
-		scrollPastFirstSlide();
+		carousel.clickNext();
 
-		cy.findByLabelText(/Next/i).click();
-
-		cy.get(fifthSlide).should(beVisible);
+		carousel.verifySlideIsCompletelyVisible(firstSlideNotVisibleIndex);
 	});
 
 	it("next button should scroll back to initial position if there are no not visible slides after first visible slide", () => {
@@ -55,17 +52,13 @@ describe("Carousel pagination", () => {
 		});
 		cy.mount(randomCarousel);
 
-		function scrollPastFirst3Slides() {
-			return scrollPast(slideWidth * 3);
-		}
+		const carousel = new CarouselPageObject();
 
-		const firstSlide = ".carousel__slide:first-child";
+		carousel.scrollPast(slideWidth * 3);
 
-		scrollPastFirst3Slides();
+		carousel.clickNext();
 
-		cy.findByLabelText(/Next/i).click();
-
-		cy.get(firstSlide).should(beVisible);
+		carousel.verifyFirstSlideIsCompletelyVisible();
 	});
 
 	it("previous button should scroll until the first not visible slide is visible", () => {
@@ -78,82 +71,57 @@ describe("Carousel pagination", () => {
 
 		cy.mount(randomCarousel);
 
-		function scrollPastFirstTwoSlides() {
-			return scrollPast(slideWidth * 2);
-		}
+		const carousel = new CarouselPageObject();
 
-		const firstSlide = ".carousel__slide:nth-child(1)";
+		carousel.scrollPast(slideWidth * 2).verifyFirstSlideIsNotCompletelyVisible();
 
-		scrollPastFirstTwoSlides().get(firstSlide).should(beNotVisible);
+		carousel.clickPrevious();
 
-		cy.findByLabelText(/Previous/i).click();
-
-		cy.get(firstSlide).should(beVisible);
+		carousel.verifyFirstSlideIsCompletelyVisible();
 	});
 
 	it("previous button should scroll to the end of the carousel when there are no slides before the first visible slide", () => {
 		const randomCarousel = CarouselMother.random();
 		cy.mount(randomCarousel);
 
-		const lastSlide = ".carousel__slide:last-child";
+		const carousel = new CarouselPageObject();
 
-		cy.findByLabelText(/Previous/i).click();
+		carousel.clickPrevious();
 
-		cy.get(lastSlide).should(beVisible);
+		carousel.verifyLastSlideIsCompletelyVisible();
 	});
 
 	it("next button should scroll correctly with random slide widths", () => {
 		const randomCarousel = CarouselMother.random();
 		cy.mount(randomCarousel);
-		disableScrollTransition();
 
-		const lastSlide = ".carousel__slide:last-child";
-		let isLastSlideVisible;
+		const carousel = new CarouselPageObject();
 
-		function clickNextButtonIfLastSlideIsNotVisible($el: JQuery<HTMLElement>) {
-			const htmlElement = $el[0];
-
-			isLastSlideVisible = isCompletelyVisible(htmlElement);
-
-			if (!isLastSlideVisible) {
-				cy.findByLabelText(/Next/i).click();
-			}
-		}
+		carousel.disableScrollTransition();
 
 		const maxAttempts = 20;
 
 		for (let i = 0; i < maxAttempts; i++) {
-			cy.get(lastSlide).then(clickNextButtonIfLastSlideIsNotVisible);
+			carousel.clickNextIfLastSlideIsNotVisible();
 		}
 
-		cy.get(lastSlide).should(beVisible);
+		carousel.verifyLastSlideIsCompletelyVisible();
 	});
 
 	it("previous button should scroll correctly with random slide widths", () => {
 		const randomCarousel = CarouselMother.random();
 		cy.mount(randomCarousel);
-		disableScrollTransition();
-		scrollUntilTheEnd();
 
-		const firstSlide = ".carousel__slide:first-child";
-		let isFirstSlideVisible;
+		const carousel = new CarouselPageObject();
 
-		function clickPreviousButtonIfLastSlideIsNotVisible($el: JQuery<HTMLElement>) {
-			const htmlElement = $el[0];
-
-			isFirstSlideVisible = isCompletelyVisible(htmlElement);
-
-			if (!isFirstSlideVisible) {
-				cy.findByLabelText(/Previous/i).click();
-			}
-		}
+		carousel.disableScrollTransition().scrollUntilTheEnd();
 
 		const maxAttempts = 20;
 
 		for (let i = 0; i < maxAttempts; i++) {
-			cy.get(firstSlide).then(clickPreviousButtonIfLastSlideIsNotVisible);
+			carousel.clickPreviousIfFirstSlideIsNotVisible();
 		}
 
-		cy.get(firstSlide).should(beVisible);
+		carousel.verifyFirstSlideIsCompletelyVisible();
 	});
 });
