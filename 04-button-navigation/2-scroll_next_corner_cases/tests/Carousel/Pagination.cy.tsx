@@ -1,4 +1,5 @@
 import { Carousel } from "../../src/Carousel";
+import { scrollPast } from "../tests-helpers/scroll";
 import { beNotVisible, beVisible } from "../tests-helpers/visibility";
 
 describe("Carousel pagination", () => {
@@ -24,6 +25,34 @@ describe("Carousel pagination", () => {
 		cy.get(thirdSlide).should(beVisible);
 	});
 
+	it("next button should scroll until the first not visible slide after a visible slide becomes visible", () => {
+		const carousel = (
+			<div style={{ width: "900px", margin: "0 auto" }}>
+				<Carousel>
+					<div style={{ width: "300px", background: "yellow" }}>slide 1</div>
+					<div style={{ width: "300px", background: "yellow" }}>slide 2</div>
+					<div style={{ width: "300px", background: "yellow" }}>slide 3</div>
+					<div style={{ width: "300px", background: "yellow" }}>slide 4</div>
+					<div style={{ width: "300px", background: "yellow" }}>slide 5</div>
+					<div style={{ width: "300px", background: "yellow" }}>slide 6</div>
+				</Carousel>
+			</div>
+		);
+		cy.mount(carousel);
+
+		function scrollPastFirstSlide() {
+			return scrollPast(300);
+		}
+
+		const fifthSlide = ".carousel__slide:nth-child(5)";
+
+		scrollPastFirstSlide();
+
+		cy.findByLabelText(/Next/i).click();
+
+		cy.get(fifthSlide).should(beVisible);
+	});
+
 	it("previous button should scroll until the first not visible slide is visible", () => {
 		const randomCarousel = (
 			<div style={{ width: "900px", margin: "0 auto" }}>
@@ -37,16 +66,13 @@ describe("Carousel pagination", () => {
 		);
 		cy.mount(randomCarousel);
 
-		function scrollPastFirstSlide() {
-			return cy.document().then((document) => {
-				const slider = document.querySelector(".carousel__slider") as HTMLElement;
-				slider.scrollLeft = 800;
-			});
+		function scrollPastFirstTwoSlides() {
+			return scrollPast(800);
 		}
 
 		const firstSlide = ".carousel__slide:nth-child(1)";
 
-		scrollPastFirstSlide().get(firstSlide).should(beNotVisible);
+		scrollPastFirstTwoSlides().get(firstSlide).should(beNotVisible);
 
 		cy.findByLabelText(/Previous/i).click();
 

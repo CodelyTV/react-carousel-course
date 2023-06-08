@@ -9,20 +9,23 @@ function scrollSliderTo(slider: HTMLElement, horizontalPosition: number): void {
 export function scrollSliderNext(slider: HTMLElement): void {
 	const slides = slider.querySelectorAll<HTMLElement>(`.carousel__slide`);
 
-	let firstNotVisibleSlide;
+	let firstNotVisibleSlideAfterVisibleSlide, firstVisibleSlide;
 
 	for (const slide of Array.from(slides)) {
-		if (!isCompletelyVisible(slide)) {
-			firstNotVisibleSlide = slide;
+		if (!firstVisibleSlide && isCompletelyVisible(slide)) {
+			firstVisibleSlide = slide;
+		}
+		if (firstVisibleSlide && !isCompletelyVisible(slide)) {
+			firstNotVisibleSlideAfterVisibleSlide = slide;
 			break;
 		}
 	}
 
-	if (!firstNotVisibleSlide) {
+	if (!firstNotVisibleSlideAfterVisibleSlide) {
 		return;
 	}
 
-	const position = firstNotVisibleSlide.offsetLeft;
+	const position = firstNotVisibleSlideAfterVisibleSlide.offsetLeft;
 
 	scrollSliderTo(slider, position);
 }
