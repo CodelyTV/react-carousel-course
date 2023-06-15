@@ -1,6 +1,6 @@
 import "./Carousel.scss";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { ArrowLeft } from "./ArrowLeft";
 import { ArrowRight } from "./ArrowRight";
@@ -22,6 +22,7 @@ export function Carousel({
 	nextButtonContent = <ArrowRight />,
 }: CarouselProps) {
 	const slider = useRef<HTMLDivElement>(null);
+	const [offset, setOffset] = useState(0);
 
 	function getSliderOrThrow() {
 		if (!slider.current) {
@@ -34,14 +35,21 @@ export function Carousel({
 	function scrollNext() {
 		const slider = getSliderOrThrow();
 
-		scrollSliderNext(slider);
+		scrollSliderNext(slider, offset);
 	}
 
 	function scrollPrevious() {
 		const slider = getSliderOrThrow();
 
-		scrollSliderPrevious(slider);
+		scrollSliderPrevious(slider, offset);
 	}
+
+	useEffect(() => {
+		const slider = getSliderOrThrow();
+
+		const offset = window.getComputedStyle(slider).getPropertyValue("padding-left") || "0";
+		setOffset(parseInt(offset, 10));
+	}, []);
 
 	return (
 		<div className="carousel">

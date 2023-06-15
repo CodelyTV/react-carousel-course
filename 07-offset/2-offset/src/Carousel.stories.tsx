@@ -227,7 +227,7 @@ export const WithOffset: Story = {
 		docs: {
 			description: {
 				story:
-					"If you want your carousel to be full width but the first slide to start aligned to a container, you can manage this with CSS custom properties. For example, in the example below we use a container of `600px` (highlighted with a red border). We will define a `--carousel-offset` custom variable to align the first slide to the container. To achieve this, it will be set to the calculation of the full width (`100vw`) minus the container width, and divided into two: `--carousel-offset: calc(100vw - 900px) / 2`. Click the 'show code' option below to see the full code.",
+					"If you want your carousel to be full width but the first slide to start aligned to a container, you can manage this with CSS custom properties. For example, in the example below we use a container of `900px` (highlighted with a red border). We will define a `--carousel-offset` custom variable to align the first slide to the container. To achieve this, it will be set to the calculation of the full width (`100vw`) minus the container width, and divided into two: `--carousel-offset: calc(100vw - 900px) / 2`. To view the working example check the [full screen version here](/story/carousel--with-offset). Click the 'show code' option below to see the full code.",
 			},
 		},
 	},
@@ -236,7 +236,7 @@ export const WithOffset: Story = {
 		<div
 			style={
 				{
-					width: "600px",
+					width: "900px",
 					margin: "0 auto",
 					border: "1px solid tomato",
 					"--carousel-offset": "calc(100vw - 900px) / 2",

@@ -10,17 +10,19 @@ export const CarouselMother = {
 		minSlideWidth = 300,
 		maxSlideWidth = 500,
 		props,
+		style,
 	}: {
 		carouselWidth?: number;
 		slidesCount?: number;
 		minSlideWidth?: number;
 		maxSlideWidth?: number;
 		props?: CarouselPropsWithoutChildren;
+		style?: React.CSSProperties;
 	} = {}) {
 		const slides = SlideMother.list(slidesCount, minSlideWidth, maxSlideWidth);
 
 		return (
-			<div style={{ width: `${carouselWidth}px`, margin: "0 auto" }}>
+			<div style={{ width: `${carouselWidth}px`, margin: "0 auto", ...style }}>
 				<Carousel {...props}>{slides}</Carousel>
 			</div>
 		);

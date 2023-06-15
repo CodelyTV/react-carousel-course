@@ -124,4 +124,58 @@ describe("Carousel pagination", () => {
 
 		carousel.verifyFirstSlideIsCompletelyVisible();
 	});
+
+	it("next button should scroll until the first not visible slide positioning it on the offset position", () => {
+		const pageWidth = 1000;
+		const containerWidth = 600;
+		const offset = (pageWidth - containerWidth) / 2;
+		const slideWidth = containerWidth / 2;
+
+		const carouselWithOffset = CarouselMother.random({
+			carouselWidth: containerWidth,
+			minSlideWidth: slideWidth,
+			maxSlideWidth: slideWidth,
+			style: {
+				"--carousel-offset": `${offset}px`,
+			} as React.CSSProperties,
+		});
+		cy.mount(carouselWithOffset);
+
+		const carousel = new CarouselPageObject();
+
+		carousel.clickNext();
+		carousel.getSlide(3).should(($el) => {
+			const slide = $el[0];
+			const slidePosition = slide.getBoundingClientRect().left;
+			expect(slidePosition).to.equal(offset);
+		});
+	});
+
+	it("previous button should scroll until the previous not visible slide positioning it on the offset position", () => {
+		const pageWidth = 1000;
+		const containerWidth = 600;
+		const offset = (pageWidth - containerWidth) / 2;
+		const slideWidth = containerWidth / 2;
+
+		const carouselWithOffset = CarouselMother.random({
+			carouselWidth: containerWidth,
+			minSlideWidth: slideWidth,
+			maxSlideWidth: slideWidth,
+			slidesCount: 5,
+			style: {
+				"--carousel-offset": `${offset}px`,
+			} as React.CSSProperties,
+		});
+		cy.mount(carouselWithOffset);
+
+		const carousel = new CarouselPageObject();
+
+		carousel.scrollPast(slideWidth * 3);
+		carousel.clickPrevious();
+		carousel.getFirstSlide().should(($el) => {
+			const slide = $el[0];
+			const slidePosition = slide.getBoundingClientRect().left;
+			expect(slidePosition).to.equal(offset);
+		});
+	});
 });

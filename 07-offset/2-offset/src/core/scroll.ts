@@ -6,7 +6,7 @@ function scrollSliderTo(slider: HTMLElement, horizontalPosition: number): void {
 	slider.scrollTo(horizontalPosition, verticalPosition);
 }
 
-export function scrollSliderNext(slider: HTMLElement): void {
+export function scrollSliderNext(slider: HTMLElement, offset: number): void {
 	const slides = slider.querySelectorAll<HTMLElement>(`.carousel__slide`);
 
 	let firstNotVisibleSlideAfterVisibleSlide, firstVisibleSlide;
@@ -22,13 +22,16 @@ export function scrollSliderNext(slider: HTMLElement): void {
 	}
 
 	const initialScrollPosition = 0;
-	const position = firstNotVisibleSlideAfterVisibleSlide?.offsetLeft ?? initialScrollPosition;
+	const targetSlidePosition = firstNotVisibleSlideAfterVisibleSlide
+		? firstNotVisibleSlideAfterVisibleSlide.offsetLeft - offset
+		: null;
+	const position = targetSlidePosition ?? initialScrollPosition;
 
 	scrollSliderTo(slider, position);
 }
 
-export function scrollSliderPrevious(slider: HTMLElement): void {
-	if (slider.scrollLeft === 0) {
+export function scrollSliderPrevious(slider: HTMLElement, offset: number): void {
+	if (slider.scrollLeft <= offset) {
 		scrollSliderTo(slider, slider.scrollWidth);
 
 		return;
@@ -66,6 +69,6 @@ export function scrollSliderPrevious(slider: HTMLElement): void {
 		}
 	}
 
-	const position = slideToScrollTo.offsetLeft;
+	const position = slideToScrollTo.offsetLeft - offset;
 	scrollSliderTo(slider, position);
 }
