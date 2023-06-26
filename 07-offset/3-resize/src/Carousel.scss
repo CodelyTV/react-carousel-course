@@ -1,0 +1,49 @@
+.carousel {
+  --margin-x: var(--carousel-offset, 0);
+
+  width: calc(100% + var(--margin-x) * 2);
+  margin-left: calc(var(--margin-x) * -1);
+  overflow: hidden;
+
+  &__slider {
+    position: relative;
+    display: flex;
+    gap: var(--slider-gap, 0);
+    padding: 0 calc(var(--margin-x));
+    overflow-x: scroll;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    scroll-behavior: smooth;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  &__nav {
+    margin-top: var(--slider-nav-margin-top, 0.5rem);
+    padding-left: calc(var(--margin-x));
+    text-align: left;
+
+    @media (hover: none) {
+      display: none;
+    }
+  }
+
+  &__button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: var(--slider-button-width, 2.5rem);
+    height: var(--slider-button-height, 2.5rem);
+    padding: var(--slider-button-padding, 0.2rem);
+    color: inherit;
+    background: transparent;
+    border: none;
+    transition: all 0.2s;
+
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+}
