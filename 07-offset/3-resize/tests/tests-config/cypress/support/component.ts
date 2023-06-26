@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 import "./commands";
+import "./global.css";
 
 import { mount } from "cypress/react18";
 

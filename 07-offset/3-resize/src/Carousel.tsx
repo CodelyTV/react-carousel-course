@@ -23,6 +23,7 @@ export function Carousel({
 }: CarouselProps) {
 	const slider = useRef<HTMLDivElement>(null);
 	const [offset, setOffset] = useState(0);
+	let timeout: number;
 
 	function getSliderOrThrow() {
 		if (!slider.current) {
@@ -44,11 +45,29 @@ export function Carousel({
 		scrollSliderPrevious(slider, offset);
 	}
 
-	useEffect(() => {
+	function setupCarousel() {
 		const slider = getSliderOrThrow();
 
 		const offset = window.getComputedStyle(slider).getPropertyValue("padding-left") || "0";
 		setOffset(parseInt(offset, 10));
+	}
+
+	function throttleSetupCarousel() {
+		window.clearTimeout(timeout);
+		const throttleTime = 200;
+
+		timeout = window.setTimeout(() => {
+			setupCarousel();
+		}, throttleTime);
+	}
+
+	useEffect(() => {
+		setupCarousel();
+		window.addEventListener("resize", throttleSetupCarousel);
+
+		return () => {
+			window.removeEventListener("resize", throttleSetupCarousel);
+		};
 	}, []);
 
 	return (

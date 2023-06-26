@@ -126,7 +126,7 @@ describe("Carousel pagination", () => {
 	});
 
 	it("next button should scroll until the first not visible slide positioning it on the offset position", () => {
-		const pageWidth = 1000;
+		const pageWidth = Cypress.config().viewportWidth;
 		const containerWidth = 600;
 		const offset = (pageWidth - containerWidth) / 2;
 		const slideWidth = containerWidth / 2;
@@ -152,7 +152,7 @@ describe("Carousel pagination", () => {
 	});
 
 	it("previous button should scroll until the previous not visible slide positioning it on the offset position", () => {
-		const pageWidth = 1000;
+		const pageWidth = Cypress.config().viewportWidth;
 		const containerWidth = 600;
 		const offset = (pageWidth - containerWidth) / 2;
 		const slideWidth = containerWidth / 2;
@@ -173,6 +173,38 @@ describe("Carousel pagination", () => {
 		carousel.scrollPast(slideWidth * 3);
 		carousel.clickPrevious();
 		carousel.getFirstSlide().should(($el) => {
+			const slide = $el[0];
+			const slidePosition = slide.getBoundingClientRect().left;
+			expect(slidePosition).to.equal(offset);
+		});
+	});
+
+	it("recalculates offset after resize correctly", () => {
+		const pageWidth = Cypress.config().viewportWidth;
+		const pageHeight = Cypress.config().viewportHeight;
+		const containerWidth = 600;
+		const slideWidth = containerWidth / 2;
+
+		const carouselWithOffset = CarouselMother.random({
+			carouselWidth: containerWidth,
+			minSlideWidth: slideWidth,
+			maxSlideWidth: slideWidth,
+			slidesCount: 5,
+			style: {
+				"--carousel-offset": `calc(100vw - ${containerWidth}px / 2)`,
+			} as React.CSSProperties,
+		});
+		cy.mount(carouselWithOffset);
+
+		const carousel = new CarouselPageObject();
+
+		const resizedPageWidth = pageWidth * 0.85;
+		cy.viewport(resizedPageWidth, pageHeight);
+
+		const offset = (resizedPageWidth - containerWidth) / 2;
+		cy.wait(200);
+		carousel.clickNext();
+		carousel.getSlide(4).should(($el) => {
 			const slide = $el[0];
 			const slidePosition = slide.getBoundingClientRect().left;
 			expect(slidePosition).to.equal(offset);
